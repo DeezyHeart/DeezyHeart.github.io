@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games Starting Soon!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Bubblegum+Sans:wght@400&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Bubblegum Sans', cursive;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,81 +21,19 @@
         }
 
         h1 {
+            font-family: 'Raleway', sans-serif;
             font-size: 4em;
             margin-bottom: 20px;
             animation: smoothRadiate 4s infinite, opalColors 6s infinite alternate;
         }
 
-        .flip-clock {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .flip-clock .flip-unit {
-            margin: 0 10px;
-        }
-
-        .flip-clock .flip-unit .flip-card {
-            position: relative;
-            width: 80px;
-            height: 120px;
+        .countdown {
+            font-family: 'Raleway', sans-serif;
             font-size: 3em;
-            background-color: #333;
-            border-radius: 8px;
-            overflow: hidden;
-            color: white;
-            text-align: center;
-        }
-
-        .flip-clock .flip-unit .flip-card .flip-top,
-        .flip-clock .flip-unit .flip-card .flip-bottom {
-            position: absolute;
-            width: 100%;
-            height: 50%;
-            background-color: #333;
-            line-height: 60px;
-            overflow: hidden;
-        }
-
-        .flip-clock .flip-unit .flip-card .flip-top {
-            top: 0;
-            border-bottom: 1px solid #000;
-            transform-origin: bottom;
-            transform: perspective(200px) rotateX(0deg);
-            transition: transform 0.3s ease-in;
-        }
-
-        .flip-clock .flip-unit .flip-card .flip-bottom {
-            bottom: 0;
-            border-top: 1px solid #000;
-            transform-origin: top;
-        }
-
-        .flip-clock .flip-unit .flip-card .flip-top.flip {
-            transform: perspective(200px) rotateX(-90deg);
-        }
-
-        .flip-clock .flip-unit .flip-card .next-top,
-        .flip-clock .flip-unit .flip-card .next-bottom {
-            position: absolute;
-            width: 100%;
-            height: 50%;
-            background-color: #333;
-            line-height: 60px;
-            overflow: hidden;
-            color: white;
-        }
-
-        .flip-clock .flip-unit .flip-card .next-top {
-            top: 0;
-            transform: rotateX(90deg);
-            transform-origin: bottom;
-        }
-
-        .flip-clock .flip-unit .flip-card .next-bottom {
-            bottom: 0;
-            transform-origin: top;
+            display: inline-block;
+            position: relative;
+            animation: waveColors 3s infinite;
+            text-transform: uppercase;
         }
 
         @keyframes smoothRadiate {
@@ -111,49 +50,20 @@
             80% { color: #ffcc66; text-shadow: 0 0 20px rgba(255, 204, 102, 0.5); }
             100% { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.7); }
         }
+
+        @keyframes waveColors {
+            0% { color: #ffffff; }
+            25% { color: #ff66cc; }
+            50% { color: #66ffcc; }
+            75% { color: #66ccff; }
+            100% { color: #ffcc66; }
+        }
     </style>
 </head>
 <body>
     <div>
         <h1>Games Starting Soon!</h1>
-        <div class="flip-clock" id="flip-clock">
-            <div class="flip-unit">
-                <div class="flip-card" id="days">
-                    <div class="flip-top">0</div>
-                    <div class="flip-bottom">0</div>
-                    <div class="next-top">0</div>
-                    <div class="next-bottom">0</div>
-                </div>
-                <div>Days</div>
-            </div>
-            <div class="flip-unit">
-                <div class="flip-card" id="hours">
-                    <div class="flip-top">0</div>
-                    <div class="flip-bottom">0</div>
-                    <div class="next-top">0</div>
-                    <div class="next-bottom">0</div>
-                </div>
-                <div>Hours</div>
-            </div>
-            <div class="flip-unit">
-                <div class="flip-card" id="minutes">
-                    <div class="flip-top">0</div>
-                    <div class="flip-bottom">0</div>
-                    <div class="next-top">0</div>
-                    <div class="next-bottom">0</div>
-                </div>
-                <div>Minutes</div>
-            </div>
-            <div class="flip-unit">
-                <div class="flip-card" id="seconds">
-                    <div class="flip-top">0</div>
-                    <div class="flip-bottom">0</div>
-                    <div class="next-top">0</div>
-                    <div class="next-bottom">0</div>
-                </div>
-                <div>Seconds</div>
-            </div>
-        </div>
+        <p class="countdown" id="countdown">Loading...</p>
     </div>
 
     <script>
@@ -171,40 +81,17 @@
             const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-            // Update the flip clock
-            flip(document.getElementById("days"), days);
-            flip(document.getElementById("hours"), hours);
-            flip(document.getElementById("minutes"), minutes);
-            flip(document.getElementById("seconds"), seconds);
+            // Display the countdown
+            document.getElementById("countdown").innerHTML = 
+                days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 
             // If the countdown is over, redirect to the website
             if (timeLeft < 0) {
                 clearInterval(countdownInterval);
-                document.getElementById("flip-clock").innerHTML = "We're Live!";
+                document.getElementById("countdown").innerHTML = "We're Live!";
                 window.location.href = "main.html"; // Redirect to your live website
             }
         }, 1000);
-
-        // Function to handle the flipping animation
-        function flip(flipCard, newValue) {
-            const currentTop = flipCard.querySelector(".flip-top");
-            const currentBottom = flipCard.querySelector(".flip-bottom");
-            const nextTop = flipCard.querySelector(".next-top");
-            const nextBottom = flipCard.querySelector(".next-bottom");
-
-            if (currentTop.innerHTML != newValue) {
-                nextTop.innerHTML = newValue;
-                nextBottom.innerHTML = newValue;
-
-                currentTop.classList.add('flip');
-
-                setTimeout(() => {
-                    currentBottom.innerHTML = newValue;
-                    currentTop.classList.remove('flip');
-                    currentTop.innerHTML = newValue;
-                }, 300);
-            }
-        }
     </script>
 </body>
 </html>
