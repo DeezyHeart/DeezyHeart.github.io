@@ -15,10 +15,30 @@
             background-color: #282c34;
             color: white;
             text-align: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: radiate 2s infinite, pulse 1.5s infinite alternate;
         }
 
         .countdown {
             font-size: 2em;
+        }
+
+        @keyframes radiate {
+            0% { transform: scale(1); color: #fbb034; }
+            25% { transform: scale(1.1); color: #ffdd00; }
+            50% { transform: scale(1.2); color: #d9e021; }
+            75% { transform: scale(1.1); color: #fcee21; }
+            100% { transform: scale(1); color: #fbb034; }
+        }
+
+        @keyframes pulse {
+            0% { text-shadow: 0 0 10px rgba(255, 0, 150, 0.5), 0 0 20px rgba(255, 0, 150, 0.3), 0 0 30px rgba(255, 0, 150, 0.2); }
+            100% { text-shadow: 0 0 20px rgba(255, 0, 150, 0.7), 0 0 30px rgba(255, 0, 150, 0.5), 0 0 40px rgba(255, 0, 150, 0.3); }
         }
     </style>
 </head>
