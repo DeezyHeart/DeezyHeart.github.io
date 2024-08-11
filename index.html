@@ -13,29 +13,41 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #d6d6d6;
+            background-color: #000000;
             color: white;
             text-align: center;
             overflow: hidden;
             flex-direction: column;
+            position: relative;
         }
 
-h1 {
-    font-family: 'Raleway', sans-serif;
-    font-size: 4em;
-    margin-bottom: 20px;
-    animation: smoothRadiate 4s infinite, opalColors 6s infinite alternate;
-}
+        h1 {
+            font-family: 'Raleway', sans-serif;
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: smoothRadiate 4s infinite, opalColors 6s infinite alternate;
+            z-index: 2; /* Keep text above the fireworks */
+        }
 
         .countdown {
-    font-family: 'Raleway', sans-serif;
-    font-size: 3em;
-    display: inline-block;
-    position: relative;
-    color: white; /* Set the countdown timer text color to white */
-    text-transform: uppercase;
-}
+            font-family: 'Raleway', sans-serif;
+            font-size: 3em;
+            display: inline-block;
+            position: relative;
+            color: white; /* Set the countdown timer text color to white */
+            text-transform: uppercase;
+            z-index: 2; /* Keep text above the fireworks */
+        }
 
+        .fireworks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Place fireworks behind the text */
+            pointer-events: none; /* Prevent fireworks from blocking text interaction */
+        }
 
         @keyframes smoothRadiate {
             0% { transform: scale(1); }
@@ -51,14 +63,6 @@ h1 {
             80% { color: #ffcc66; text-shadow: 0 0 20px rgba(255, 204, 102, 0.5); }
             100% { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.7); }
         }
-
-        @keyframes waveColors {
-            0% { color: #ffffff; }
-            25% { color: #ff66cc; }
-            50% { color: #66ffcc; }
-            75% { color: #66ccff; }
-            100% { color: #ffcc66; }
-        }
     </style>
 </head>
 <body>
@@ -66,6 +70,8 @@ h1 {
         <h1>Games Starting Soon!</h1>
         <p class="countdown" id="countdown">Loading...</p>
     </div>
+
+    <div class="fireworks" id="fireworks"></div>
 
     <script>
         // Set the date and time for the website to go live
@@ -93,6 +99,43 @@ h1 {
                 window.location.href = "main.html"; // Redirect to your live website
             }
         }, 1000);
+
+        // Fireworks logic
+        const fireworksContainer = document.getElementById('fireworks');
+
+        function createFirework() {
+            const firework = document.createElement('div');
+            const size = Math.random() * 50 + 50;
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            firework.style.position = 'absolute';
+            firework.style.width = `${size}px`;
+            firework.style.height = `${size}px`;
+            firework.style.borderRadius = '50%';
+            firework.style.background = `radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%)`;
+            firework.style.left = `${x}%`;
+            firework.style.top = `${y}%`;
+            firework.style.transform = `translate(-50%, -50%) scale(0)`;
+            firework.style.opacity = '0';
+            firework.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+            fireworksContainer.appendChild(firework);
+
+            setTimeout(() => {
+                firework.style.transform = 'translate(-50%, -50%) scale(1)';
+                firework.style.opacity = '1';
+            }, 100);
+
+            setTimeout(() => {
+                firework.style.transform = 'translate(-50%, -50%) scale(0)';
+                firework.style.opacity = '0';
+                setTimeout(() => {
+                    fireworksContainer.removeChild(firework);
+                }, 1000);
+            }, 2000);
+        }
+
+        // Trigger fireworks periodically
+        setInterval(createFirework, 3000);
     </script>
 </body>
 </html>
