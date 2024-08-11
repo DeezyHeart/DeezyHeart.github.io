@@ -21,24 +21,28 @@
         h1 {
             font-size: 4em;
             margin-bottom: 20px;
-            animation: radiate 2s infinite, pulse 1.5s infinite alternate;
+            animation: smoothRadiate 4s infinite, opalColors 6s infinite alternate;
         }
 
         .countdown {
             font-size: 2em;
         }
 
-        @keyframes radiate {
-            0% { transform: scale(1); color: #fbb034; }
-            25% { transform: scale(1.1); color: #ffdd00; }
-            50% { transform: scale(1.2); color: #d9e021; }
-            75% { transform: scale(1.1); color: #fcee21; }
-            100% { transform: scale(1); color: #fbb034; }
+        /* Smooth scaling animation */
+        @keyframes smoothRadiate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
         }
 
-        @keyframes pulse {
-            0% { text-shadow: 0 0 10px rgba(255, 0, 150, 0.5), 0 0 20px rgba(255, 0, 150, 0.3), 0 0 30px rgba(255, 0, 150, 0.2); }
-            100% { text-shadow: 0 0 20px rgba(255, 0, 150, 0.7), 0 0 30px rgba(255, 0, 150, 0.5), 0 0 40px rgba(255, 0, 150, 0.3); }
+        /* Color animation inspired by a vibrant white opal */
+        @keyframes opalColors {
+            0% { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.7); }
+            20% { color: #ff66cc; text-shadow: 0 0 20px rgba(255, 102, 204, 0.5); }
+            40% { color: #66ffcc; text-shadow: 0 0 20px rgba(102, 255, 204, 0.5); }
+            60% { color: #66ccff; text-shadow: 0 0 20px rgba(102, 204, 255, 0.5); }
+            80% { color: #ffcc66; text-shadow: 0 0 20px rgba(255, 204, 102, 0.5); }
+            100% { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.7); }
         }
     </style>
 </head>
