@@ -16,6 +16,7 @@
             color: white;
             text-align: center;
             overflow: hidden;
+            flex-direction: column;
         }
 
         h1 {
@@ -24,18 +25,54 @@
             animation: smoothRadiate 4s infinite, opalColors 6s infinite alternate;
         }
 
-        .countdown {
-            font-size: 2em;
+        .flip-clock {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Smooth scaling animation */
+        .flip-clock .flip-unit {
+            margin: 0 10px;
+        }
+
+        .flip-clock .flip-unit .flip-card {
+            perspective: 1000px;
+        }
+
+        .flip-clock .flip-unit .flip-card .flip-card-inner {
+            position: relative;
+            width: 80px;
+            height: 120px;
+            font-size: 3em;
+            background-color: #333;
+            border-radius: 8px;
+            overflow: hidden;
+            color: white;
+            text-align: center;
+            line-height: 120px;
+            transform-style: preserve-3d;
+            transform-origin: bottom;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+        }
+
+        .flip-clock .flip-unit .flip-card .flip-card-front,
+        .flip-clock .flip-unit .flip-card .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+
+        .flip-clock .flip-unit .flip-card .flip-card-back {
+            transform: rotateX(180deg);
+        }
+
         @keyframes smoothRadiate {
             0% { transform: scale(1); }
             50% { transform: scale(1.15); }
             100% { transform: scale(1); }
         }
 
-        /* Color animation inspired by a vibrant white opal */
         @keyframes opalColors {
             0% { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.7); }
             20% { color: #ff66cc; text-shadow: 0 0 20px rgba(255, 102, 204, 0.5); }
@@ -49,7 +86,44 @@
 <body>
     <div>
         <h1>Games Starting Soon!</h1>
-        <p class="countdown" id="countdown">Loading...</p>
+        <div class="flip-clock" id="flip-clock">
+            <div class="flip-unit">
+                <div class="flip-card" id="days">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">0</div>
+                        <div class="flip-card-back">0</div>
+                    </div>
+                </div>
+                <div>Days</div>
+            </div>
+            <div class="flip-unit">
+                <div class="flip-card" id="hours">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">0</div>
+                        <div class="flip-card-back">0</div>
+                    </div>
+                </div>
+                <div>Hours</div>
+            </div>
+            <div class="flip-unit">
+                <div class="flip-card" id="minutes">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">0</div>
+                        <div class="flip-card-back">0</div>
+                    </div>
+                </div>
+                <div>Minutes</div>
+            </div>
+            <div class="flip-unit">
+                <div class="flip-card" id="seconds">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">0</div>
+                        <div class="flip-card-back">0</div>
+                    </div>
+                </div>
+                <div>Seconds</div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -67,17 +141,36 @@
             const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-            // Display the countdown
-            document.getElementById("countdown").innerHTML = 
-                days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+            // Update the flip clock
+            flip(document.getElementById("days"), days);
+            flip(document.getElementById("hours"), hours);
+            flip(document.getElementById("minutes"), minutes);
+            flip(document.getElementById("seconds"), seconds);
 
             // If the countdown is over, redirect to the website
             if (timeLeft < 0) {
                 clearInterval(countdownInterval);
-                document.getElementById("countdown").innerHTML = "We're Live!";
+                document.getElementById("flip-clock").innerHTML = "We're Live!";
                 window.location.href = "main.html"; // Redirect to your live website
             }
         }, 1000);
+
+        // Function to handle the flipping animation
+        function flip(flipCard, newValue) {
+            const flipCardInner = flipCard.querySelector(".flip-card-inner");
+            const currentFront = flipCardInner.querySelector(".flip-card-front");
+            const currentBack = flipCardInner.querySelector(".flip-card-back");
+
+            // Only flip if the value has changed
+            if (currentFront.innerHTML != newValue) {
+                currentBack.innerHTML = newValue;
+                flipCardInner.style.transform = "rotateX(180deg)";
+                setTimeout(() => {
+                    currentFront.innerHTML = newValue;
+                    flipCardInner.style.transform = "rotateX(0deg)";
+                }, 300);
+            }
+        }
     </script>
 </body>
 </html>
